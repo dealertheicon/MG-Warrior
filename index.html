@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Weight Warrior</title>
+</head>
+<body>
+  <div id="game"></div>
+  <div id="survey" style="display:none;">
+    <h2>Survey</h2>
+    <form id="surveyForm">
+      <label for="goal">What is your weight loss goal?</label>
+      <input type="text" id="goal" name="goal"><br><br>
+      <label for="exercise">How often do you exercise?</label>
+      <select id="exercise" name="exercise">
+        <option value="daily">Daily</option>
+        <option value="weekly">Weekly</option>
+        <option value="occasionally">Occasionally</option>
+        <option value="never">Never</option>
+      </select><br><br>
+      <button type="button" onclick="submitSurvey()">Submit</button>
+    </form>
+  </div>
+  
+  <script>
+    // เริ่มเกม
+    function startGame() {
+      document.getElementById('game').style.display = 'block';
+      document.getElementById('survey').style.display = 'none';
+    }
+    
+    // แสดงแบบสอบถาม
+    function showSurvey() {
+      document.getElementById('game').style.display = 'none';
+      document.getElementById('survey').style.display = 'block';
+    }
+    
+    // ส่งแบบสอบถาม
+    function submitSurvey() {
+      var goal = document.getElementById('goal').value;
+      var exercise = document.getElementById('exercise').value;
+      console.log('Goal:', goal);
+      console.log('Exercise:', exercise);
+      
+      // ส่งข้อมูลไปยังเซิร์ฟเวอร์
+      fetch('https://your-server.com/api/survey', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({goal: goal, exercise: exercise})
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        startGame();
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    }
+    
+    // เริ่มเกมเมื่อโหลดหน้าเว็บเสร็จ
+    window.onload = startGame;
+  </script>
+</body>
+</html>
